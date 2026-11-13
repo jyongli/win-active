@@ -1,0 +1,95 @@
+<Window x:Class="WinActive.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="WinActive · Windows 授权" Width="1000" Height="690" MinWidth="820" MinHeight="540"
+    WindowStartupLocation="CenterScreen" FontFamily="Segoe UI, Microsoft YaHei UI" FontSize="14"
+    Background="#F2F5EE" Foreground="{StaticResource Ink}" UseLayoutRounding="True" TextOptions.TextFormattingMode="Display"
+    Loaded="Window_Loaded" Closing="Window_Closing">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="205" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Border Background="#172D32" Padding="22,28,22,24">
+            <DockPanel LastChildFill="False">
+                <StackPanel DockPanel.Dock="Top">
+                    <Border Width="40" Height="40" CornerRadius="9" Background="#BDE7D3" HorizontalAlignment="Left">
+                        <Path Data="M 0,8 L 8,8 8,0 M 10,13 L 16,13 16,4 M 2,16 L 6,16"
+                            Stroke="#176552" StrokeThickness="2.3" StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                            StrokeLineJoin="Round" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <TextBlock Text="WinActive" Foreground="White" FontWeight="SemiBold" FontSize="25" Margin="0,13,0,2" />
+                    <TextBlock Text="Windows 授权工具" Foreground="#A4C4BE" FontSize="13" />
+                    <Border Background="#30494C" Height="1" Margin="0,23,0,19" />
+                    <TextBlock Text="运行权限" Foreground="#A4C4BE" FontSize="12" />
+                    <TextBlock x:Name="AccessText" Text="正在检测" Foreground="White" FontWeight="SemiBold" Margin="0,6,0,0" />
+                    <Button x:Name="ElevateButton" Content="以管理员身份打开" Click="Elevate_Click"
+                        Margin="0,13,0,0" Background="#294648" BorderBrush="#65827B" Foreground="White" FontSize="12" />
+                </StackPanel>
+                <StackPanel DockPanel.Dock="Bottom">
+                    <TextBlock Text="本机 Windows" Foreground="#A4C4BE" FontSize="12" />
+                    <TextBlock x:Name="SidebarBuild" Text="—" Foreground="White" Margin="0,5,0,12" />
+                    <TextBlock Text="桌面版 0.1.0" Foreground="#A4C4BE" FontSize="12" />
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="26,23,26,17">
+                <StackPanel MaxWidth="1020">
+                    <TextBlock Text="系统授权" FontSize="33" FontWeight="SemiBold" />
+                    <TextBlock Text="查看 Windows 授权状态，使用自备产品密钥激活。" Margin="0,2,0,15"
+                        Style="{StaticResource Description}" />
+                    <Border Style="{StaticResource Card}" Background="#E4F0E7" BorderBrush="#CBDDD1" Padding="18,14">
+                        <DockPanel>
+                            <Button x:Name="RefreshButton" DockPanel.Dock="Right" Content="刷新状态" Click="Refresh_Click" VerticalAlignment="Center" />
+                            <StackPanel Margin="0,0,10,0">
+                                <TextBlock Text="当前状态" Foreground="{StaticResource Muted}" FontSize="12" />
+                                <TextBlock x:Name="StateText" Text="正在读取…" FontSize="23" FontWeight="SemiBold"
+                                    Margin="0,3,0,3" AutomationProperties.LiveSetting="Polite" />
+                                <TextBlock x:Name="EditionText" Text="正在查询 Windows 版本信息" Style="{StaticResource Description}" />
+                            </StackPanel>
+                        </DockPanel>
+                    </Border>
+
+                    <Border Style="{StaticResource Card}" Margin="0,17,0,0">
+                        <StackPanel>
+                            <TextBlock Text="产品密钥" FontSize="17" FontWeight="SemiBold" />
+                            <Label Target="{Binding ElementName=KeyInput}" Content="输入 25 位产品密钥"
+                                Padding="0" Margin="0,5,0,7" Foreground="{StaticResource Muted}" />
+                            <PasswordBox x:Name="KeyInput" Height="34" MaxLength="64" Padding="7,4"
+                                VerticalContentAlignment="Center" BorderBrush="#AEBFB6" PasswordChanged="KeyInput_Changed"
+                                AutomationProperties.Name="Windows 产品密钥" />
+                            <Button x:Name="KeyButton" Content="安装并激活" Click="Key_Click"
+                                IsEnabled="False" Style="{StaticResource PrimaryButton}" Margin="0,10,0,0" />
+                        </StackPanel>
+                    </Border>
+
+                    <Border Style="{StaticResource Card}" Margin="0,13,0,0" Padding="18,13">
+                        <DockPanel>
+                            <Button x:Name="UpgradeButton" DockPanel.Dock="Right" Content="打开版本升级" Click="Upgrade_Click" VerticalAlignment="Center" />
+                            <StackPanel Margin="0,0,12,0">
+                                <TextBlock Text="版本升级" FontWeight="SemiBold" />
+                                <TextBlock Text="使用 Windows 的更改产品密钥界面。" Style="{StaticResource Description}" Margin="0,3,0,0" />
+                            </StackPanel>
+                        </DockPanel>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+            <Border Grid.Row="1" BorderBrush="#D2DDD2" BorderThickness="0,1,0,0" Background="#F8FAF6" Padding="26,9,26,11">
+                <DockPanel>
+                    <Button x:Name="SettingsButton" DockPanel.Dock="Right" Content="系统激活设置" Click="Settings_Click" VerticalAlignment="Center" />
+                    <StackPanel Margin="0,0,10,0" VerticalAlignment="Center">
+                        <TextBlock x:Name="Feedback" Text="正在读取授权状态…" Style="{StaticResource Description}" AutomationProperties.LiveSetting="Polite" />
+                        <ProgressBar x:Name="ProgressBar" IsIndeterminate="True" Visibility="Collapsed" Height="3"
+                            Foreground="{StaticResource Accent}" Margin="0,4,0,0" />
+                    </StackPanel>
+                </DockPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>

@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="WinActive.Core/WinActive.Core.csproj" />
+  <Project Path="WinActive.Tests/WinActive.Tests.csproj" />
+  <Project Path="WinActive/WinActive.csproj" />
+</Solution>
